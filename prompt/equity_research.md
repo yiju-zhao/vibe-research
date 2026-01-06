@@ -100,4 +100,4 @@ Final Output Requirements:
 
 Present your findings in the format of a professional, well-structured equity research report. Make effective use of data visualizations and charts to support your arguments. Every key data point, fact, or conclusion in your report must be properly attributed to its source. 
 
-Today is October 7th, 2025, please begin your in-depth stock analysis on ticker: Cameco and save your report once finished.
+Today is October 30th, 2025, please begin your in-depth stock analysis on ticker: AMD and save your report once finished.

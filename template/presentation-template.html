@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presentation Template</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow: hidden;
+            color: #333;
+        }
+
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            perspective: 1000px;
+        }
+
+        .slide {
+            width: 90vw;
+            max-width: 1200px;
+            height: 80vh;
+            max-height: 675px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 60px 80px;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .slide.active {
+            display: flex;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Title Slide */
+        .slide.title-slide {
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .slide.title-slide h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .slide.title-slide .subtitle {
+            font-size: 1.8rem;
+            font-weight: 300;
+            opacity: 0.9;
+            margin-bottom: 40px;
+        }
+
+        .slide.title-slide .author {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            margin-top: 60px;
+        }
+
+        /* Content Slides */
+        .slide h2 {
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .slide h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            margin-top: 30px;
+            color: #764ba2;
+        }
+
+        .slide p {
+            font-size: 1.3rem;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            color: #555;
+        }
+
+        .slide ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .slide ul li {
+            font-size: 1.3rem;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            padding-left: 40px;
+            position: relative;
+            color: #555;
+        }
+
+        .slide ul li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        /* Two Column Layout */
+        .two-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 20px;
+        }
+
+        .column {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Image Placeholder */
+        .image-placeholder {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 1.2rem;
+            margin: 20px 0;
+        }
+
+        /* Navigation */
+        .navigation {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 1000;
+        }
+
+        .nav-button {
+            background: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            color: #667eea;
+        }
+
+        .nav-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-button:active {
+            transform: translateY(0);
+        }
+
+        .nav-button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        /* Slide Counter */
+        .slide-counter {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            background: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            font-size: 1rem;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s ease;
+            z-index: 1000;
+        }
+
+        /* Highlight Box */
+        .highlight {
+            background: #f0f4ff;
+            border-left: 4px solid #667eea;
+            padding: 20px 30px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .slide {
+                padding: 40px;
+            }
+
+            .slide.title-slide h1 {
+                font-size: 2.5rem;
+            }
+
+            .slide.title-slide .subtitle {
+                font-size: 1.3rem;
+            }
+
+            .slide h2 {
+                font-size: 2rem;
+            }
+
+            .slide p,
+            .slide ul li {
+                font-size: 1.1rem;
+            }
+
+            .two-columns {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar" id="progressBar"></div>
+
+    <div class="presentation-container">
+        <!-- Slide 1: Title -->
+        <div class="slide title-slide active">
+            <h1>Your Presentation Title</h1>
+            <div class="subtitle">A Modern Presentation Template</div>
+            <div class="author">Your Name | Date</div>
+        </div>
+
+        <!-- Slide 2: Introduction -->
+        <div class="slide">
+            <h2>Introduction</h2>
+            <p>Welcome to this modern presentation template. This slide demonstrates a simple content layout with a heading and paragraph text.</p>
+            <div class="highlight">
+                <p>Use highlight boxes to emphasize important information.</p>
+            </div>
+        </div>
+
+        <!-- Slide 3: Key Points -->
+        <div class="slide">
+            <h2>Key Points</h2>
+            <ul>
+                <li>Clean and modern design with smooth transitions</li>
+                <li>Fully responsive and mobile-friendly</li>
+                <li>Easy to customize colors and styles</li>
+                <li>Keyboard navigation support (arrow keys)</li>
+                <li>Click anywhere to advance slides</li>
+            </ul>
+        </div>
+
+        <!-- Slide 4: Two Column Layout -->
+        <div class="slide">
+            <h2>Two Column Layout</h2>
+            <div class="two-columns">
+                <div class="column">
+                    <h3>Left Column</h3>
+                    <p>This demonstrates a two-column layout perfect for comparisons or side-by-side content.</p>
+                    <ul>
+                        <li>Point one</li>
+                        <li>Point two</li>
+                    </ul>
+                </div>
+                <div class="column">
+                    <h3>Right Column</h3>
+                    <p>You can add images, text, or any other content in these columns.</p>
+                    <ul>
+                        <li>Point three</li>
+                        <li>Point four</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Image Example -->
+        <div class="slide">
+            <h2>Visual Content</h2>
+            <p>Add images or visual elements to enhance your presentation:</p>
+            <div class="image-placeholder">Image Placeholder</div>
+            <p>Replace the placeholder with your own images.</p>
+        </div>
+
+        <!-- Slide 6: Thank You -->
+        <div class="slide title-slide">
+            <h1>Thank You</h1>
+            <div class="subtitle">Questions?</div>
+            <div class="author">contact@email.com</div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="navigation">
+        <button class="nav-button" id="prevBtn" onclick="previousSlide()">←</button>
+        <button class="nav-button" id="nextBtn" onclick="nextSlide()">→</button>
+    </div>
+
+    <div class="slide-counter" id="slideCounter">1 / 6</div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            updateUI();
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                showSlide(currentSlide + 1);
+            }
+        }
+
+        function previousSlide() {
+            if (currentSlide > 0) {
+                showSlide(currentSlide - 1);
+            }
+        }
+
+        function updateUI() {
+            // Update counter
+            document.getElementById('slideCounter').textContent = `${currentSlide + 1} / ${totalSlides}`;
+
+            // Update progress bar
+            const progress = ((currentSlide + 1) / totalSlides) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+
+            // Update button states
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                previousSlide();
+            }
+        });
+
+        // Click to advance
+        document.querySelector('.presentation-container').addEventListener('click', (e) => {
+            if (!e.target.classList.contains('nav-button')) {
+                nextSlide();
+            }
+        });
+
+        // Initialize
+        updateUI();
+    </script>
+</body>
+</html>
